@@ -1,13 +1,948 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<title>Page Title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Enchanted Haven — A Whimsical Sanctuary</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Quicksand:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* Custom Fonts */
+        .font-serif-aesthetic { font-family: 'Playfair Display', serif; }
+        .font-handwriting { font-family: 'Caveat', cursive; }
+        .font-sans-cozy { font-family: 'Quicksand', sans-serif; }
+
+        /* Smooth Theme Transitions */
+        body {
+            font-family: 'Quicksand', sans-serif;
+            transition: background 1.5s ease, color 1s ease;
+            overflow-x: hidden;
+            user-select: none;
+        }
+
+        /* Dynamic Theme Background Gradients */
+        body.theme-twilight {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #4c1d95 70%, #831843 100%);
+            color: #f3e8ff;
+        }
+        body.theme-tea {
+            background: linear-gradient(135deg, #2e1065 0%, #3b0764 35%, #581c87 70%, #701a75 100%);
+            color: #fae8ff;
+        }
+        body.theme-greenhouse {
+            background: linear-gradient(135deg, #064e3b 0%, #022c22 35%, #14532d 70%, #1c1917 100%);
+            color: #ecfdf5;
+        }
+        body.theme-library {
+            background: linear-gradient(135deg, #451a03 0%, #292524 40%, #1c1917 70%, #0c0a09 100%);
+            color: #fef3c7;
+        }
+
+        /* Glassmorphism Styling */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, border-color 0.4s ease;
+        }
+        .glass-card:hover {
+            border-color: rgba(255, 255, 255, 0.35);
+            box-shadow: 0 12px 40px 0 rgba(255, 255, 255, 0.15);
+        }
+
+        /* Wishing Jar Sky Frame */
+        .jar-container {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 40px 40px 20px 20px;
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.2), 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Floating Animation */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(2deg); }
+        }
+        .animate-float {
+            animation: floatSlow 6s ease-in-out infinite;
+        }
+
+        /* Glowing Effects */
+        .glow-text {
+            text-shadow: 0 0 12px rgba(255, 255, 255, 0.6), 0 0 20px rgba(236, 72, 153, 0.4);
+        }
+        .glow-box {
+            box-shadow: 0 0 25px rgba(244, 114, 182, 0.3);
+        }
+
+        /* Cursor Canvas Setup */
+        #cursorCanvas, #bgCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+        #bgCanvas { z-index: 1; }
+
+        /* Tarot / Oracle Card Flip Effect */
+        .flip-card {
+            perspective: 1000px;
+        }
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 1.5rem;
+        }
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Popping Idea Bubbles */
+        .idea-bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.05));
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(4px);
+            cursor: pointer;
+            transition: transform 0.2s ease, opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 12px;
+        }
+        .idea-bubble:hover {
+            transform: scale(1.1) translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Pulse Ring for Ambient Audio Toggle */
+        .audio-active {
+            box-shadow: 0 0 0 0 rgba(244, 114, 182, 0.7);
+            animation: pulse-ring 2s infinite;
+        }
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 0 0 rgba(244, 114, 182, 0.5); }
+            70% { box-shadow: 0 0 0 12px rgba(244, 114, 182, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(244, 114, 182, 0); }
+        }
+    </style>
 </head>
-<body>
+<body class="theme-twilight min-h-screen text-slate-100 relative pb-20">
 
-<h1 style="color:rgb(41, 41, 189)"> <3 </h1>
-<p>This is alisha!!! .</p>
+    <!-- Canvas Layer for Particles & Cursor Trails -->
+    <canvas id="bgCanvas"></canvas>
+    <canvas id="cursorCanvas"></canvas>
 
+    <!-- Floating Audio Helper Modal on First Click -->
+    <div id="audioInitNotice" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 glass-card px-6 py-2 rounded-full text-xs font-medium text-pink-200 tracking-wide flex items-center gap-2 animate-bounce cursor-pointer opacity-90 hover:opacity-100 transition-opacity" onclick="initAudioContext()">
+        <i class="fa-solid fa-wand-magic-sparkles text-yellow-300"></i> Click anywhere to enable magical audio soundscapes
+    </div>
+
+    <!-- Header Section -->
+    <header class="relative z-20 pt-12 pb-6 text-center px-4">
+        <div class="inline-block animate-float">
+            <span class="text-xs uppercase tracking-widest px-4 py-1.5 rounded-full bg-white/10 border border-white/20 font-sans-cozy text-pink-200 glow-box">
+                ✦ Welcome to your whimsical sanctuary ✦
+            </span>
+        </div>
+        <h1 class="text-5xl md:text-7xl font-serif-aesthetic mt-4 mb-2 glow-text tracking-tight font-normal">
+            The Enchanted Haven
+        </h1>
+        <p class="font-handwriting text-2xl md:text-3xl text-pink-200/90 max-w-xl mx-auto leading-relaxed">
+            Catch a star, read the cards, and bask in the dreamy ambient stillness.
+        </p>
+
+        <!-- Dynamic Theme Switcher ("The Cozy Nook") -->
+        <div class="mt-8 flex flex-wrap justify-center gap-3 max-w-2xl mx-auto px-4">
+            <button onclick="changeTheme('theme-twilight', 'Twilight Sky Garden')" class="theme-btn px-4 py-2 rounded-full glass-card text-xs md:text-sm font-medium hover:bg-white/20 transition-all flex items-center gap-2 border border-white/20">
+                <i class="fa-solid fa-moon text-indigo-300"></i> Twilight Garden
+            </button>
+            <button onclick="changeTheme('theme-tea', 'Midnight Tea Party')" class="theme-btn px-4 py-2 rounded-full glass-card text-xs md:text-sm font-medium hover:bg-white/20 transition-all flex items-center gap-2 border border-white/20">
+                <i class="fa-solid fa-mug-hot text-fuchsia-300"></i> Midnight Tea
+            </button>
+            <button onclick="changeTheme('theme-greenhouse', 'Sunlit Greenhouse')" class="theme-btn px-4 py-2 rounded-full glass-card text-xs md:text-sm font-medium hover:bg-white/20 transition-all flex items-center gap-2 border border-white/20">
+                <i class="fa-solid fa-seedling text-emerald-300"></i> Enchanted Greenhouse
+            </button>
+            <button onclick="changeTheme('theme-library', 'Fairy Dust Library')" class="theme-btn px-4 py-2 rounded-full glass-card text-xs md:text-sm font-medium hover:bg-white/20 transition-all flex items-center gap-2 border border-white/20">
+                <i class="fa-solid fa-book-bookmark text-amber-300"></i> Fairy Library
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Interactive Grid -->
+    <main class="relative z-20 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8">
+
+        <!-- 1. WISHING WELL / STAR JAR CONTAINER (Lg: 7 cols) -->
+        <section class="lg:col-span-7 glass-card rounded-3xl p-6 md:p-8 flex flex-col justify-between relative overflow-hidden">
+            <div class="flex justify-between items-start mb-4">
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-serif-aesthetic flex items-center gap-2">
+                        <i class="fa-solid fa-jar text-yellow-300"></i> The Wishing Jar
+                    </h2>
+                    <p class="text-xs md:text-sm text-purple-200/80 font-sans-cozy mt-1">
+                        Whisper your wish to the sky. Watch it transform into a permanent glowing star inside your magical jar.
+                    </p>
+                </div>
+                <span id="starCount" class="bg-yellow-400/20 text-yellow-200 text-xs px-3 py-1 rounded-full border border-yellow-300/30 font-mono">
+                    ★ 0 Stars
+                </span>
+            </div>
+
+            <!-- The Sky Jar Container -->
+            <div id="jarSky" class="jar-container h-64 md:h-72 w-full my-4 relative flex items-center justify-center p-4">
+                <p id="jarEmptyText" class="text-center font-handwriting text-2xl text-white/40 pointer-events-none">
+                    The jar is waiting for your first secret wish...
+                </p>
+                <!-- Dynamic Stars Rendered Here -->
+            </div>
+
+            <!-- Wish Input Bar -->
+            <form onsubmit="handleMakeWish(event)" class="flex gap-2 mt-2">
+                <input type="text" id="wishInput" placeholder="Type a dream, wish, or kind thought..." 
+                       class="w-full bg-white/10 border border-white/20 rounded-2xl px-4 py-3 text-sm text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-pink-300/50 backdrop-blur-md transition-all">
+                <button type="submit" class="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-400 hover:to-purple-500 text-white font-medium px-6 py-3 rounded-2xl shadow-lg transition-all transform active:scale-95 flex items-center gap-2 whitespace-nowrap text-sm">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Wish
+                </button>
+            </form>
+        </section>
+
+        <!-- 2. DAILY FAIRY ORACLE / MOOD GENERATOR (Lg: 5 cols) -->
+        <section class="lg:col-span-5 glass-card rounded-3xl p-6 md:p-8 flex flex-col justify-between text-center relative">
+            <div>
+                <h2 class="text-2xl md:text-3xl font-serif-aesthetic mb-1 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-crystal-ball text-pink-300"></i> Fairy Oracle
+                </h2>
+                <p class="text-xs text-purple-200/80 font-sans-cozy mb-6">
+                    Tap the enchanted card to reveal today's aesthetic guidance & color mood.
+                </p>
+            </div>
+
+            <!-- Flip Card Container -->
+            <div class="w-full h-72 flip-card cursor-pointer my-auto" id="oracleCard" onclick="flipOracleCard()">
+                <div class="flip-card-inner">
+                    <!-- Front Side -->
+                    <div class="flip-card-front glass-card bg-gradient-to-br from-purple-900/60 to-pink-900/60 border border-white/30 flex flex-col items-center justify-center p-6 shadow-2xl">
+                        <div class="w-16 h-16 rounded-full bg-pink-400/20 border border-pink-300/40 flex items-center justify-center mb-4 animate-pulse">
+                            <i class="fa-solid fa-eye text-2xl text-pink-200"></i>
+                        </div>
+                        <h3 class="font-serif-aesthetic text-xl text-yellow-200">Draw Your Daily Card</h3>
+                        <p class="font-handwriting text-xl text-pink-200/80 mt-2">Click to reveal your message</p>
+                    </div>
+                    <!-- Back Side -->
+                    <div class="flip-card-back glass-card bg-gradient-to-br from-indigo-900/90 to-purple-950/90 border border-yellow-300/40 flex flex-col items-center justify-between p-6 shadow-2xl">
+                        <span id="oracleTheme" class="text-xs font-mono uppercase tracking-widest text-yellow-300/80">✦ Celestial Wisdom ✦</span>
+                        <p id="oracleMessage" class="font-serif-aesthetic text-lg md:text-xl text-pink-100 italic my-auto leading-relaxed">
+                            "Let your spirit wander into the soft quiet places where dreams are sewn."
+                        </p>
+                        <div class="w-full pt-3 border-t border-white/10 flex justify-between items-center text-xs">
+                            <span class="text-purple-200/70 font-sans-cozy">Palette of Today:</span>
+                            <div id="oraclePalette" class="flex gap-1.5">
+                                <!-- Dynamic Palette Dots -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="flipOracleCard(true)" class="mt-4 text-xs font-medium text-pink-300 hover:text-pink-100 transition-colors flex items-center justify-center gap-1.5 mx-auto">
+                <i class="fa-solid fa-rotate-right"></i> Shuffle New Reading
+            </button>
+        </section>
+
+        <!-- 3. AMBIENT MOOD SYNTHESIZER (Lg: 12 cols) -->
+        <section class="lg:col-span-12 glass-card rounded-3xl p-6 md:p-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-serif-aesthetic flex items-center gap-2">
+                        <i class="fa-solid fa-compact-disc text-purple-300"></i> Ambient Mood Synthesizer
+                    </h2>
+                    <p class="text-xs md:text-sm text-purple-200/80 font-sans-cozy">
+                        Synthesize relaxing procedural acoustic soundscapes directly in your browser. Mix and match layers.
+                    </p>
+                </div>
+                <!-- Master Volume Slider -->
+                <div class="flex items-center gap-3 bg-white/10 px-4 py-2 rounded-2xl border border-white/15 self-start md:self-auto">
+                    <i class="fa-solid fa-volume-low text-xs text-purple-200"></i>
+                    <input type="range" id="masterVolume" min="0" max="1" step="0.01" value="0.5" oninput="updateMasterVolume(this.value)" class="w-24 accent-pink-400 cursor-pointer">
+                    <i class="fa-solid fa-volume-high text-xs text-purple-200"></i>
+                </div>
+            </div>
+
+            <!-- Sound Grid Buttons -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <!-- Wind Chimes -->
+                <button id="btnSoundChimes" onclick="toggleSound('chimes')" class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-white/20 transition-all border border-white/15 text-center group">
+                    <div class="w-12 h-12 rounded-full bg-cyan-400/20 border border-cyan-300/30 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-wind text-cyan-200 text-lg"></i>
+                    </div>
+                    <span class="text-sm font-medium text-cyan-100">Celestial Chimes</span>
+                    <span class="text-[10px] text-white/50">Procedural Bell Tones</span>
+                </button>
+
+                <!-- Cozy Hearth -->
+                <button id="btnSoundHearth" onclick="toggleSound('hearth')" class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-white/20 transition-all border border-white/15 text-center group">
+                    <div class="w-12 h-12 rounded-full bg-amber-400/20 border border-amber-300/30 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-fire text-amber-200 text-lg"></i>
+                    </div>
+                    <span class="text-sm font-medium text-amber-100">Warm Hearth</span>
+                    <span class="text-[10px] text-white/50">Crackling Ember Synth</span>
+                </button>
+
+                <!-- Soft Rain Synth -->
+                <button id="btnSoundRain" onclick="toggleSound('rain')" class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-white/20 transition-all border border-white/15 text-center group">
+                    <div class="w-12 h-12 rounded-full bg-blue-400/20 border border-blue-300/30 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-cloud-rain text-blue-200 text-lg"></i>
+                    </div>
+                    <span class="text-sm font-medium text-blue-100">Whimsical Rain</span>
+                    <span class="text-[10px] text-white/50">Filtered Pink Noise</span>
+                </button>
+
+                <!-- Dreamy Music Box -->
+                <button id="btnSoundMusicBox" onclick="toggleSound('musicbox')" class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-white/20 transition-all border border-white/15 text-center group">
+                    <div class="w-12 h-12 rounded-full bg-pink-400/20 border border-pink-300/30 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-music text-pink-200 text-lg"></i>
+                    </div>
+                    <span class="text-sm font-medium text-pink-100">Fairy Music Box</span>
+                    <span class="text-[10px] text-white/50">Arpeggiated Lullaby</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- 4. FLOATING IDEA BUBBLE FIELD (Lg: 12 cols) -->
+        <section class="lg:col-span-12 glass-card rounded-3xl p-6 md:p-8 relative min-h-[22rem] flex flex-col justify-between overflow-hidden">
+            <div>
+                <h2 class="text-2xl md:text-3xl font-serif-aesthetic flex items-center gap-2">
+                    <i class="fa-solid fa-soap text-pink-200"></i> Floating Thought Bubbles
+                </h2>
+                <p class="text-xs md:text-sm text-purple-200/80 font-sans-cozy">
+                    Pop the gentle drifting bubbles to uncover cozy affirmations, micro-poems, and sweet whimsical thoughts.
+                </p>
+            </div>
+
+            <!-- Dynamic Floating Area -->
+            <div id="bubbleContainer" class="relative w-full h-64 my-4 overflow-hidden rounded-2xl bg-black/10 border border-white/10">
+                <!-- Bubbles generated by JS -->
+            </div>
+
+            <div class="flex justify-between items-center text-xs text-purple-200/60">
+                <span>✦ Bubbles reform endlessly</span>
+                <button onclick="spawnNewBubbleCluster()" class="hover:text-pink-200 transition-colors flex items-center gap-1">
+                    <i class="fa-solid fa-arrows-rotate"></i> Refresh Bubbles
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal Dialog for Popped Bubbles / Messages -->
+    <div id="wishModal" class="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="glass-card bg-slate-900/80 border border-white/30 rounded-3xl p-8 max-w-md w-full text-center relative transform scale-90 transition-transform duration-300" id="wishModalContent">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-white/50 hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="w-16 h-16 rounded-full bg-pink-500/20 border border-pink-400/40 flex items-center justify-center mx-auto mb-4">
+                <i id="modalIcon" class="fa-solid fa-sparkles text-2xl text-pink-300"></i>
+            </div>
+            <h3 id="modalTitle" class="text-2xl font-serif-aesthetic text-yellow-200 mb-2">Secret Discovered</h3>
+            <p id="modalBody" class="font-handwriting text-2xl text-pink-100 leading-relaxed mb-6">
+                "Small magical moments are quietly waiting around every corner."
+            </p>
+            <button onclick="closeModal()" class="bg-white/15 hover:bg-white/25 text-white font-medium px-6 py-2.5 rounded-full text-sm border border-white/20 transition-all">
+                Keep Wandering ✦
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="relative z-20 text-center py-8 text-xs text-purple-200/60 font-sans-cozy">
+        <p>Designed with fairy dust & cozy ambient code ✦ Enjoy the calm moment</p>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        /* ==========================================================================
+           1. CANVAS BACKGROUND & CURSOR SPARKLE TRAIL
+           ========================================================================== */
+        const bgCanvas = document.getElementById('bgCanvas');
+        const bgCtx = bgCanvas.getContext('2d');
+        const cursorCanvas = document.getElementById('cursorCanvas');
+        const cursorCtx = cursorCanvas.getContext('2d');
+
+        let width, height;
+        let stars = [];
+        let fireflies = [];
+        let cursorParticles = [];
+        let mouse = { x: -100, y: -100 };
+
+        function resizeCanvases() {
+            width = bgCanvas.width = cursorCanvas.width = window.innerWidth;
+            height = bgCanvas.height = cursorCanvas.height = window.innerHeight;
+            initBackgroundElements();
+        }
+
+        window.addEventListener('resize', resizeCanvases);
+
+        // Particle Classes
+        class Star {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2 + 0.5;
+                this.alpha = Math.random();
+                this.speed = Math.random() * 0.01 + 0.005;
+            }
+            update() {
+                this.alpha += this.speed;
+                if (this.alpha > 1 || this.alpha < 0) this.speed = -this.speed;
+            }
+            draw() {
+                bgCtx.fillStyle = `rgba(255, 255, 255, ${Math.abs(this.alpha)})`;
+                bgCtx.beginPath();
+                bgCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                bgCtx.fill();
+            }
+        }
+
+        class Firefly {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 3 + 1.5;
+                this.vx = (Math.random() - 0.5) * 0.8;
+                this.vy = (Math.random() - 0.5) * 0.8;
+                this.alpha = Math.random();
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Mouse interaction - gently float away from cursor
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 120) {
+                    this.x -= (dx / dist) * 1.5;
+                    this.y -= (dy / dist) * 1.5;
+                }
+
+                if (this.x < 0) this.x = width;
+                if (this.x > width) this.x = 0;
+                if (this.y < 0) this.y = height;
+                if (this.y > height) this.y = 0;
+            }
+            draw() {
+                bgCtx.shadowBlur = 10;
+                bgCtx.shadowColor = 'rgba(253, 224, 71, 0.8)';
+                bgCtx.fillStyle = `rgba(253, 224, 71, ${0.4 + Math.sin(Date.now() * 0.003) * 0.3})`;
+                bgCtx.beginPath();
+                bgCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                bgCtx.fill();
+                bgCtx.shadowBlur = 0;
+            }
+        }
+
+        class CursorSparkle {
+            constructor(x, y) {
+                this.x = x + (Math.random() - 0.5) * 10;
+                this.y = y + (Math.random() - 0.5) * 10;
+                this.size = Math.random() * 4 + 1;
+                this.vx = (Math.random() - 0.5) * 1.2;
+                this.vy = (Math.random() - 0.5) * 1.2 - 0.5;
+                this.life = 1.0;
+                this.decay = Math.random() * 0.03 + 0.015;
+                this.color = `hsla(${Math.random() * 60 + 300}, 100%, 80%, `; // Pink/purple glow
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.life -= this.decay;
+            }
+            draw() {
+                cursorCtx.save();
+                cursorCtx.fillStyle = this.color + this.life + ')';
+                cursorCtx.beginPath();
+                cursorCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                cursorCtx.fill();
+                cursorCtx.restore();
+            }
+        }
+
+        function initBackgroundElements() {
+            stars = [];
+            fireflies = [];
+            for (let i = 0; i < 90; i++) stars.push(new Star());
+            for (let i = 0; i < 25; i++) fireflies.push(new Firefly());
+        }
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+            for (let i = 0; i < 2; i++) {
+                cursorParticles.push(new CursorSparkle(e.clientX, e.clientY));
+            }
+        });
+
+        function animateCanvases() {
+            bgCtx.clearRect(0, 0, width, height);
+            cursorCtx.clearRect(0, 0, width, height);
+
+            stars.forEach(s => { s.update(); s.draw(); });
+            fireflies.forEach(f => { f.update(); f.draw(); });
+
+            for (let i = cursorParticles.length - 1; i >= 0; i--) {
+                cursorParticles[i].update();
+                cursorParticles[i].draw();
+                if (cursorParticles[i].life <= 0) {
+                    cursorParticles.splice(i, 1);
+                }
+            }
+
+            requestAnimationFrame(animateCanvases);
+        }
+
+        /* ==========================================================================
+           2. COZY THEME SWITCHER
+           ========================================================================== */
+        function changeTheme(themeClass, themeName) {
+            document.body.className = `${themeClass} min-h-screen text-slate-100 relative pb-20`;
+            playChimeSound(600, 0.1);
+        }
+
+        /* ==========================================================================
+           3. WISHING WELL / STAR JAR LOGIC
+           ========================================================================== */
+        let wishesList = [];
+
+        function handleMakeWish(e) {
+            e.preventDefault();
+            const input = document.getElementById('wishInput');
+            const wishText = input.value.trim();
+            if (!wishText) return;
+
+            // Remove empty text if present
+            const emptyTxt = document.getElementById('jarEmptyText');
+            if (emptyTxt) emptyTxt.style.display = 'none';
+
+            // Add wish object
+            const wish = {
+                id: Date.now(),
+                text: wishText,
+                x: Math.random() * 80 + 10, // Percent
+                y: Math.random() * 70 + 15,
+                color: ['#fef08a', '#fbcfe8', '#e0e7ff', '#bae6fd'][Math.floor(Math.random() * 4)]
+            };
+            wishesList.push(wish);
+            input.value = '';
+
+            renderWishStar(wish);
+            updateStarCount();
+            playChimeSound(880, 0.2);
+        }
+
+        function renderWishStar(wish) {
+            const jarSky = document.getElementById('jarSky');
+            const starEl = document.createElement('div');
+            starEl.className = 'absolute cursor-pointer transform -translate-x-1/2 -translate-y-1/2 hover:scale-150 transition-transform duration-300 animate-pulse';
+            starEl.style.left = wish.x + '%';
+            starEl.style.top = wish.y + '%';
+            starEl.innerHTML = `<i class="fa-solid fa-star text-lg" style="color: ${wish.color}; filter: drop-shadow(0 0 6px ${wish.color})"></i>`;
+
+            starEl.onclick = () => {
+                showModal('★ A Secret Wish', `"${wish.text}"`, 'fa-star');
+                playChimeSound(750, 0.15);
+            };
+
+            jarSky.appendChild(starEl);
+        }
+
+        function updateStarCount() {
+            document.getElementById('starCount').innerText = `★ ${wishesList.length} ${wishesList.length === 1 ? 'Star' : 'Stars'}`;
+        }
+
+        /* ==========================================================================
+           4. FAIRY ORACLE / MOOD GENERATOR
+           ========================================================================== */
+        const oracleReadings = [
+            {
+                msg: "Listen closely to quiet moments; that is where magic plants its tiny seeds.",
+                palette: ['#fbcfe8', '#ddd6fe', '#bae6fd']
+            },
+            {
+                msg: "Your intuition is a delicate golden compass. Trust where it gently points today.",
+                palette: ['#fef08a', '#fed7aa', '#fbcfe8']
+            },
+            {
+                msg: "Rest is not lost time; it is the soil in which your brightest ideas bloom.",
+                palette: ['#a7f3d0', '#bfdbfe', '#f5d0fe']
+            },
+            {
+                msg: "Softness is your power. You can bend like delicate willow leaves and never break.",
+                palette: ['#e9d5ff', '#fbcfe8', '#fef3c7']
+            },
+            {
+                msg: "A sweet surprise is drifting toward you like a petal on a gentle evening stream.",
+                palette: ['#f472b6', '#c084fc', '#60a5fa']
+            }
+        ];
+
+        let isFlipped = false;
+
+        function flipOracleCard(forceNew = false) {
+            const card = document.getElementById('oracleCard');
+            if (forceNew && isFlipped) {
+                card.classList.remove('flipped');
+                isFlipped = false;
+                setTimeout(() => flipOracleCard(), 400);
+                return;
+            }
+
+            if (!isFlipped) {
+                // Generate Reading
+                const reading = oracleReadings[Math.floor(Math.random() * oracleReadings.length)];
+                document.getElementById('oracleMessage').innerText = `"${reading.msg}"`;
+                
+                const palContainer = document.getElementById('oraclePalette');
+                palContainer.innerHTML = '';
+                reading.palette.forEach(c => {
+                    const dot = document.createElement('span');
+                    dot.className = 'w-4 h-4 rounded-full border border-white/40 shadow-sm';
+                    dot.style.backgroundColor = c;
+                    palContainer.appendChild(dot);
+                });
+
+                card.classList.add('flipped');
+                isFlipped = true;
+                playChimeSound(523.25, 0.2); // C5 note
+            } else {
+                card.classList.remove('flipped');
+                isFlipped = false;
+            }
+        }
+
+        /* ==========================================================================
+           5. FLOATING IDEA BUBBLE GENERATOR
+           ========================================================================== */
+        const bubbleMessages = [
+            "You are doing far better than you give yourself credit for.",
+            "Take a long, soft, deep breath right now.",
+            "Micro-poem: Small stars shine bright / in the stillness of night.",
+            "Drink a warm cup of herbal tea and cozy up.",
+            "Magic exists in the tiny details of everyday life.",
+            "Your kindness creates soft ripples across the world.",
+            "Micro-poem: Gentle rain falls slow / watching green moss grow.",
+            "Give yourself permission to pause and daydream."
+        ];
+
+        function spawnNewBubbleCluster() {
+            const container = document.getElementById('bubbleContainer');
+            container.innerHTML = '';
+
+            for (let i = 0; i < 6; i++) {
+                const bubble = document.createElement('div');
+                bubble.className = 'idea-bubble';
+                
+                const size = Math.floor(Math.random() * 40) + 70; // 70px to 110px
+                const left = Math.floor(Math.random() * 80) + 5;
+                const top = Math.floor(Math.random() * 60) + 10;
+                const msg = bubbleMessages[Math.floor(Math.random() * bubbleMessages.length)];
+
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                bubble.style.left = `${left}%`;
+                bubble.style.top = `${top}%`;
+
+                bubble.innerHTML = `<i class="fa-solid fa-sparkles text-pink-200 text-sm opacity-80"></i>`;
+
+                bubble.onclick = (e) => {
+                    e.stopPropagation();
+                    // Pop animation
+                    bubble.style.transform = 'scale(1.4)';
+                    bubble.style.opacity = '0';
+                    playPopSound();
+                    setTimeout(() => {
+                        bubble.remove();
+                        showModal('✦ Cozy Thought ✦', `"${msg}"`, 'fa-soap');
+                    }, 200);
+                };
+
+                container.appendChild(bubble);
+            }
+        }
+
+        /* ==========================================================================
+           6. AMBIENT SOUND SYNTHESIZER (WEB AUDIO API)
+           ========================================================================== */
+        let audioCtx = null;
+        let masterGain = null;
+        let activeSounds = {
+            chimes: false,
+            hearth: false,
+            rain: false,
+            musicbox: false
+        };
+
+        // Sound Engine Storage
+        let chimeInterval = null;
+        let hearthNodes = null;
+        let rainNodes = null;
+        let musicBoxInterval = null;
+
+        function initAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                masterGain = audioCtx.createGain();
+                masterGain.gain.value = 0.5;
+                masterGain.connect(audioCtx.destination);
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            const notice = document.getElementById('audioInitNotice');
+            if (notice) notice.style.display = 'none';
+        }
+
+        document.addEventListener('click', initAudioContext, { once: true });
+
+        function updateMasterVolume(val) {
+            if (masterGain) masterGain.gain.value = val;
+        }
+
+        function toggleSound(type) {
+            initAudioContext();
+            activeSounds[type] = !activeSounds[type];
+            const btn = document.getElementById(`btnSound${type.charAt(0).toUpperCase() + type.slice(1)}`);
+
+            if (activeSounds[type]) {
+                btn.classList.add('audio-active', 'border-pink-300');
+                startSound(type);
+            } else {
+                btn.classList.remove('audio-active', 'border-pink-300');
+                stopSound(type);
+            }
+        }
+
+        function startSound(type) {
+            if (type === 'chimes') {
+                chimeInterval = setInterval(() => {
+                    const freqs = [523.25, 659.25, 783.99, 1046.50, 1174.66, 1318.51];
+                    const f = freqs[Math.floor(Math.random() * freqs.length)];
+                    playChimeSound(f, 0.1);
+                }, 1200);
+            } else if (type === 'hearth') {
+                // Pink noise + crackle pops
+                const bufferSize = audioCtx.sampleRate * 2;
+                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = (Math.random() * 2 - 1) * 0.05;
+                }
+                const noise = audioCtx.createBufferSource();
+                noise.buffer = buffer;
+                noise.loop = true;
+
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'lowpass';
+                filter.frequency.value = 400;
+
+                const gain = audioCtx.createGain();
+                gain.gain.value = 0.15;
+
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(masterGain);
+                noise.start();
+                hearthNodes = { noise, gain };
+            } else if (type === 'rain') {
+                // Soft pink noise filtered for rain
+                const bufferSize = audioCtx.sampleRate * 2;
+                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const data = buffer.getChannelData(0);
+                let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+                for (let i = 0; i < bufferSize; i++) {
+                    let white = Math.random() * 2 - 1;
+                    b0 = 0.99886 * b0 + white * 0.0555179;
+                    b1 = 0.99332 * b1 + white * 0.0750759;
+                    b2 = 0.96900 * b2 + white * 0.1538520;
+                    b3 = 0.86650 * b3 + white * 0.3104856;
+                    b4 = 0.55000 * b4 + white * 0.5329522;
+                    b5 = -0.7616 * b5 - white * 0.0168980;
+                    data[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
+                    data[i] *= 0.015; // Volume scaling
+                    b6 = white * 0.115926;
+                }
+                const rainSrc = audioCtx.createBufferSource();
+                rainSrc.buffer = buffer;
+                rainSrc.loop = true;
+
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'lowpass';
+                filter.frequency.value = 800;
+
+                const gain = audioCtx.createGain();
+                gain.gain.value = 0.3;
+
+                rainSrc.connect(filter);
+                filter.connect(gain);
+                gain.connect(masterGain);
+                rainSrc.start();
+                rainNodes = { rainSrc, gain };
+            } else if (type === 'musicbox') {
+                const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99];
+                let step = 0;
+                musicBoxInterval = setInterval(() => {
+                    const note = notes[step % notes.length];
+                    playSineTone(note, 0.4, 0.08);
+                    step += Math.floor(Math.random() * 2) + 1;
+                }, 400);
+            }
+        }
+
+        function stopSound(type) {
+            if (type === 'chimes' && chimeInterval) clearInterval(chimeInterval);
+            if (type === 'hearth' && hearthNodes) {
+                hearthNodes.noise.stop();
+                hearthNodes = null;
+            }
+            if (type === 'rain' && rainNodes) {
+                rainNodes.rainSrc.stop();
+                rainNodes = null;
+            }
+            if (type === 'musicbox' && musicBoxInterval) clearInterval(musicBoxInterval);
+        }
+
+        // Helper Audio Trigger Functions
+        function playChimeSound(freq, vol = 0.1) {
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+            gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 2.5);
+
+            osc.connect(gain);
+            gain.connect(masterGain);
+
+            osc.start();
+            osc.stop(audioCtx.currentTime + 2.5);
+        }
+
+        function playSineTone(freq, duration, vol = 0.1) {
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+            gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+
+            osc.connect(gain);
+            gain.connect(masterGain);
+
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        }
+
+        function playPopSound() {
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.08);
+
+            gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+
+            osc.connect(gain);
+            gain.connect(masterGain);
+
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.08);
+        }
+
+        /* ==========================================================================
+           7. MODAL DIALOG CONTROLS
+           ========================================================================== */
+        function showModal(title, text, iconClass = 'fa-sparkles') {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalBody').innerText = text;
+            document.getElementById('modalIcon').className = `fa-solid ${iconClass} text-2xl text-pink-300`;
+
+            const modal = document.getElementById('wishModal');
+            const content = document.getElementById('wishModalContent');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            content.classList.remove('scale-90');
+            content.classList.add('scale-100');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('wishModal');
+            const content = document.getElementById('wishModalContent');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-90');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        /* ==========================================================================
+           INITIALIZATION ON LOAD
+           ========================================================================== */
+        window.onload = () => {
+            resizeCanvases();
+            animateCanvases();
+            spawnNewBubbleCluster();
+        };
+    </script>
 </body>
-
-
 </html>
